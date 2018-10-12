@@ -28,10 +28,9 @@
  */
 
 package org.firstinspires.ftc.teamcode;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -50,8 +49,8 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Linear OpMode", group="Linear Opmode")
-@Disabled
+@TeleOp(name="control mode", group="Linear Opmode")
+//@Disabled
 public class AndroidStudoDemoOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
@@ -106,9 +105,6 @@ public class AndroidStudoDemoOpMode_Linear extends LinearOpMode {
             rightDrive.setPower(rightPower);
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.update();
         }
     }
 }
