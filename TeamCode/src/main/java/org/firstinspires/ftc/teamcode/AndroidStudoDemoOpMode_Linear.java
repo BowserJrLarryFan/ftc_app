@@ -104,7 +104,7 @@ public class AndroidStudoDemoOpMode_Linear extends LinearOpMode {
             leftDrive.setPower(leftPower);
             rightDrive.setPower(rightPower);
 
-            // Show the elapsed game time and wheel power.
+            // Show the elapsed game time and wheel power
         }
     }
 }
