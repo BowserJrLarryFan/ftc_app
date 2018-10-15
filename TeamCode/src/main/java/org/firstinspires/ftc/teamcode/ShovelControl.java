@@ -123,16 +123,16 @@ public class ShovelControl extends LinearOpMode {
                 rightDrive.setPower(rightPower);
             }
             if(sideExtend == true){
-                sideSlide.setPower(1.0);
+                sideSlide.setPower(0.75);
             }
             if(sideExtend == false){
-                sideSlide.setPower(0.0);
+                sideSlide.setPower(-0.75);
             }
             if(verExtend == true){
-                upSlide.setPower(0.5);
+                upSlide.setPower(1.0);
             }
             if(verExtend == false){
-                upSlide.setPower(0.0);
+                upSlide.setPower(-0.75);
             }
             if(hold == true){
                 grabber.setPosition(0.1);
