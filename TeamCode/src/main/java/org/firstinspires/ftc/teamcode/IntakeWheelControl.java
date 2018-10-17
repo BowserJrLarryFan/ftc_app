@@ -138,7 +138,7 @@ public class IntakeWheelControl extends LinearOpMode {
                 intakeWheel.setPower(1.0);
             }
             if(take == false){
-                intakeWheel.setPower(-1.0);
+                intakeWheel.setPower(0.0);
             }
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
