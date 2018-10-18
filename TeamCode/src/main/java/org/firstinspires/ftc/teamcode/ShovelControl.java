@@ -104,6 +104,7 @@ public class ShovelControl extends LinearOpMode {
             boolean sideExtend = gamepad2.right_bumper;
             boolean verExtend = gamepad2.left_bumper;
             boolean hold = gamepad2.a;
+            boolean drop = gamepad2.b;
             if(turn < -0.5) {
                 leftPower = turn;
                 rightPower = -turn;
@@ -137,7 +138,7 @@ public class ShovelControl extends LinearOpMode {
             if(hold == true){
                 grabber.setPosition(0.1);
             }
-            if(hold == false){
+            if(drop == true){
                 grabber.setPosition(0.9);
             }
             // Tank Mode uses one stick to control each wheel.

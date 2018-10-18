@@ -103,7 +103,7 @@ public class IntakeWheelControl extends LinearOpMode {
             boolean sideExtend = gamepad2.right_bumper;
             boolean verExtend = gamepad2.left_bumper;
             boolean take = gamepad2.a;
-
+            boolean release = gamepad2.b;
             if(turn < -0.5) {
                 leftPower = turn;
                 rightPower = -turn;
@@ -137,10 +137,14 @@ public class IntakeWheelControl extends LinearOpMode {
             if(take == true){
                 intakeWheel.setPower(1.0);
             }
-            if(take == false){
+            if(release == true){
+                intakeWheel.setPower(-1.0);// Tank Mode uses one stick to control each wheel.
+            }
+            if(take == false && release == false){
                 intakeWheel.setPower(0.0);
             }
-            // Tank Mode uses one stick to control each wheel.
+
+
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
             // rightPower = -gamepad1.right_stick_y ;
