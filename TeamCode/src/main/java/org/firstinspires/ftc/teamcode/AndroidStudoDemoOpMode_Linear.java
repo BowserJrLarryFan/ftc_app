@@ -95,8 +95,8 @@ public class AndroidStudoDemoOpMode_Linear extends LinearOpMode {
             double turn  =  gamepad1.left_stick_x;
 
             if(turn < -0.5) {
-                leftPower = turn;
-                rightPower = -turn;
+                leftPower = -turn;
+                rightPower = turn;
                 leftDrive.setPower(leftPower);
                 rightDrive.setPower(rightPower);
             }

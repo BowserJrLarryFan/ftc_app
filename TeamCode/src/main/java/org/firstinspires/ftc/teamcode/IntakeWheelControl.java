@@ -105,8 +105,8 @@ public class IntakeWheelControl extends LinearOpMode {
             boolean take = gamepad2.a;
             boolean release = gamepad2.b;
             if(turn < -0.5) {
-                leftPower = turn;
-                rightPower = -turn;
+                leftPower = -turn;
+                rightPower = turn;
                 leftDrive.setPower(leftPower);
                 rightDrive.setPower(rightPower);
             }

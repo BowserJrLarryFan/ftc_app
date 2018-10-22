@@ -106,8 +106,8 @@ public class ShovelControl extends LinearOpMode {
             boolean hold = gamepad2.a;
             boolean drop = gamepad2.b;
             if(turn < -0.5) {
-                leftPower = turn;
-                rightPower = -turn;
+                leftPower = -turn;
+                rightPower = turn;
                 leftDrive.setPower(leftPower);
                 rightDrive.setPower(rightPower);
             }
