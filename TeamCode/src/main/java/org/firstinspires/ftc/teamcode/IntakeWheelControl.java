@@ -100,8 +100,8 @@ public class IntakeWheelControl extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive =  gamepad1.left_stick_y;
             double turn  =  gamepad1.left_stick_x;
-            boolean sideExtend = gamepad2.right_bumper;
-            boolean verExtend = gamepad2.left_bumper;
+            double sideExtend = gamepad2.left_stick_y;
+            double verExtend = gamepad2.right_stick_y;
             boolean take = gamepad2.a;
             boolean release = gamepad2.b;
             if(turn < -0.5) {
@@ -122,18 +122,8 @@ public class IntakeWheelControl extends LinearOpMode {
                 leftDrive.setPower(leftPower);
                 rightDrive.setPower(rightPower);
             }
-            if(sideExtend == true){
-                sideSlide.setPower(0.75);
-            }
-            if(sideExtend == false){
-                sideSlide.setPower(-0.75);
-            }
-            if(verExtend == true){
-                upSlide.setPower(1.0);
-            }
-            if(verExtend == false){
-                upSlide.setPower(-0.75);
-            }
+            upSlide.setPower(verExtend);
+            sideSlide.setPower(sideExtend);
             if(take == true){
                 intakeWheel.setPower(1.0);
             }
