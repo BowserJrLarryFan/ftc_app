@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -60,7 +61,7 @@ public class IntakeWheelControl extends LinearOpMode {
     private DcMotor rightDrive = null;
     private DcMotor sideSlide = null;
     private DcMotor upSlide = null;
-    private DcMotor intakeWheel = null;
+    private CRServo intakeWheel = null;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -73,7 +74,7 @@ public class IntakeWheelControl extends LinearOpMode {
         rightDrive = hardwareMap.get(DcMotor.class, "motorR");
         sideSlide = hardwareMap.get(DcMotor.class, "sideSlide");
         upSlide = hardwareMap.get(DcMotor.class, "verSlide");
-        intakeWheel = hardwareMap.get(DcMotor.class, "inWheel");
+        intakeWheel = hardwareMap.get(CRServo.class, "inWheel");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
