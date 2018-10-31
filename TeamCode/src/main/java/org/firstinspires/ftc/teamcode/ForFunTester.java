@@ -51,17 +51,18 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="intake wheel control mode", group="Linear Opmode")
+@TeleOp(name="for fun intake wheel", group="Linear Opmode")
 //@Disabled
-public class IntakeWheelControl extends LinearOpMode {
+public class ForFunTester extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    private DcMotor sideSlide = null;
-    private DcMotor upSlide = null;
-    private CRServo intakeWheel = null;
+    private DcMotor liftR = null;
+    private DcMotor liftL = null;
+    private DcMotor intakeL = null;
+    private DcMotor intakeR = null;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -72,16 +73,19 @@ public class IntakeWheelControl extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "motorL");
         rightDrive = hardwareMap.get(DcMotor.class, "motorR");
-        sideSlide = hardwareMap.get(DcMotor.class, "sideSlide");
-        upSlide = hardwareMap.get(DcMotor.class, "verSlide");
-        intakeWheel = hardwareMap.get(CRServo.class, "inWheel");
+        liftR = hardwareMap.get(DcMotor.class, "liftR");
+        liftL = hardwareMap.get(DcMotor.class, "liftL");
+        intakeL = hardwareMap.get(DcMotor.class, "intakeL");
+        intakeR = hardwareMap.get(DcMotor.class, "intakeR");
+
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        sideSlide.setDirection(DcMotor.Direction.REVERSE);
-        upSlide.setDirection(DcMotor.Direction.REVERSE);
-        intakeWheel.setDirection(DcMotor.Direction.FORWARD);
+        liftR.setDirection(DcMotor.Direction.FORWARD);
+        liftL.setDirection(DcMotor.Direction.REVERSE);
+        intakeR.setDirection(DcMotor.Direction.FORWARD);
+        intakeL.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -101,10 +105,9 @@ public class IntakeWheelControl extends LinearOpMode {
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive =  gamepad1.left_stick_y;
             double turn  =  gamepad1.left_stick_x;
-            double sideExtend = gamepad2.left_stick_y;
-            double verExtend = gamepad2.right_stick_y;
-            boolean take = gamepad2.a;
-            boolean release = gamepad2.b;
+            boolean shootBall = gamepad1.a;
+            boolean suckBall = gamepad1.b;
+
             if(turn < -0.5) {
                 leftPower = -turn;
                 rightPower = turn;
@@ -112,29 +115,29 @@ public class IntakeWheelControl extends LinearOpMode {
                 rightDrive.setPower(rightPower);
             }
             if(turn > 0.5){
-                rightPower = -turn;
-                leftPower = turn;
+                rightPower = turn;
+                leftPower = -turn;
                 leftDrive.setPower(leftPower);
-                rightDrive.setPower(-rightPower);
+                rightDrive.setPower(rightPower);
             }
             if(turn <= 0.5 && turn >= -0.5){
                 rightPower = drive;
                 leftPower = drive;
-                leftDrive.setPower(leftPower);
-                rightDrive.setPower(rightPower);
+                leftDrive.setPower(-leftPower);
+                rightDrive.setPower(-rightPower);
             }
-            upSlide.setPower(verExtend);
-            sideSlide.setPower(sideExtend);
-            if(take == true){
-                intakeWheel.setPower(1.0);
+            if(shootBall == true){
+                intakeL.setPower(1.0);// Tank Mode uses one stick to control each wheel.
+                intakeR.setPower(1.0);
             }
-            if(release == true){
-                intakeWheel.setPower(-1.0);// Tank Mode uses one stick to control each wheel.
+            if(suckBall == true){
+                intakeL.setPower(-1.0);
+                intakeR.setPower(-1.0);
             }
-            if(take == false && release == false){
-                intakeWheel.setPower(0.0);
+           if(suckBall == true && shootBall == true){
+                intakeR.setPower(0);
+                intakeL.setPower(0);
             }
-
 
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
             // leftPower  = -gamepad1.left_stick_y ;
