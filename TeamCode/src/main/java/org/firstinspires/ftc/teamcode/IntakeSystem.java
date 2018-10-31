@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.sun.tools.javac.tree.DCTree;
 
 
 /**
@@ -51,18 +52,17 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="for fun intake wheel", group="Linear Opmode")
+@TeleOp(name="intake wheel system controls", group="Linear Opmode")
 //@Disabled
-public class ForFunTester extends LinearOpMode {
+public class IntakeSystem extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    private DcMotor liftR = null;
-    private DcMotor liftL = null;
-    private DcMotor intakeL = null;
-    private DcMotor intakeR = null;
+    private CRServo intake = null;
+    private DcMotor extend = null;
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -73,21 +73,17 @@ public class ForFunTester extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "motorL");
         rightDrive = hardwareMap.get(DcMotor.class, "motorR");
-        liftR = hardwareMap.get(DcMotor.class, "liftR");
-        liftL = hardwareMap.get(DcMotor.class, "liftL");
-        intakeL = hardwareMap.get(DcMotor.class, "intakeL");
-        intakeR = hardwareMap.get(DcMotor.class, "intakeR");
+        intake = hardwareMap.get(CRServo.class, "intake");
+        extend = hardwareMap.get(DcMotor.class, "extender");
+
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        liftR.setDirection(DcMotor.Direction.FORWARD);
-        liftL.setDirection(DcMotor.Direction.REVERSE);
-        intakeR.setDirection(DcMotor.Direction.FORWARD);
-        intakeL.setDirection(DcMotor.Direction.REVERSE);
+        extend.setDirection(DcMotor.Direction.FORWARD);
+        intake.setDirection(DcMotor.Direction.FORWARD);
 
-        // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
@@ -107,6 +103,7 @@ public class ForFunTester extends LinearOpMode {
             double turn  =  gamepad1.left_stick_x;
             boolean shootBall = gamepad1.a;
             boolean suckBall = gamepad1.b;
+            double linSin = gamepad1.right_stick_y;
 
             if(turn < -0.5) {
                 leftPower = -turn;
@@ -127,23 +124,16 @@ public class ForFunTester extends LinearOpMode {
                 rightDrive.setPower(-rightPower);
             }
             if(shootBall == true){
-                intakeL.setPower(1.0);// Tank Mode uses one stick to control each wheel.
-                intakeR.setPower(1.0);
+                intake.setPower(1.0);// Tank Mode uses one stick to control each wheel.
+
             }
             if(suckBall == true){
-                intakeL.setPower(-1.0);
-                intakeR.setPower(-1.0);
+                intake.setPower(-1.0);
             }
-           if(suckBall == true && shootBall == true){
-                intakeR.setPower(0);
-                intakeL.setPower(0);
+            if(suckBall == true && shootBall == true){
+                intake.setPower(0);
             }
-
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
-
-            // Send calculated power to wheels
+            extend.setPower(linSin);
 
 
             // Show the elapsed game time and wheel power
