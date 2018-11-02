@@ -59,8 +59,9 @@ public class IntakeWheelControl extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
-    private DcMotor sideSlide = null;
-    private DcMotor upSlide = null;
+    private DcMotor sideSlideL = null;
+    private DcMotor sideSlideR = null;
+    private DcMotor pivitor = null;
     private CRServo intakeWheel = null;
     @Override
     public void runOpMode() {
@@ -72,15 +73,17 @@ public class IntakeWheelControl extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "motorL");
         rightDrive = hardwareMap.get(DcMotor.class, "motorR");
-        sideSlide = hardwareMap.get(DcMotor.class, "sideSlide");
-        upSlide = hardwareMap.get(DcMotor.class, "verSlide");
+        sideSlideL = hardwareMap.get(DcMotor.class, "sideSlideL");
+        sideSlideR = hardwareMap.get(DcMotor.class, "sideSlideR");
+        pivitor = hardwareMap.get(DcMotor.class, "pivit");
         intakeWheel = hardwareMap.get(CRServo.class, "inWheel");
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        sideSlide.setDirection(DcMotor.Direction.REVERSE);
-        upSlide.setDirection(DcMotor.Direction.REVERSE);
+        sideSlideL.setDirection(DcMotor.Direction.REVERSE);
+        sideSlideR.setDirection(DcMotor.Direction.REVERSE);
+        pivitor.setDirection(DcMotor.Direction.REVERSE);
         intakeWheel.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
@@ -102,7 +105,7 @@ public class IntakeWheelControl extends LinearOpMode {
             double drive =  gamepad1.left_stick_y;
             double turn  =  gamepad1.left_stick_x;
             double sideExtend = gamepad2.left_stick_y;
-            double verExtend = gamepad2.right_stick_y;
+            double pivit = gamepad2.right_stick_y;
             boolean take = gamepad2.a;
             boolean release = gamepad2.b;
             if(turn < -0.5) {
@@ -123,8 +126,9 @@ public class IntakeWheelControl extends LinearOpMode {
                 leftDrive.setPower(leftPower);
                 rightDrive.setPower(rightPower);
             }
-            upSlide.setPower(verExtend);
-            sideSlide.setPower(sideExtend);
+            sideSlideL.setPower(sideExtend);
+            sideSlideR.setPower(sideExtend);
+            pivitor.setPower(pivit);
             if(take == true){
                 intakeWheel.setPower(1.0);
             }
