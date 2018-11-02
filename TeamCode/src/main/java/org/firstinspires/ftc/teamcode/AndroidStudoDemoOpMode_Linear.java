@@ -107,8 +107,8 @@ public class AndroidStudoDemoOpMode_Linear extends LinearOpMode {
                 rightDrive.setPower(rightPower);
             }
             if(turn <= 0.5 && turn >= -0.5){
-                rightPower = drive;
-                leftPower = drive;
+                rightPower = -drive;
+                leftPower = -drive;
                 leftDrive.setPower(leftPower);
                 rightDrive.setPower(rightPower);
             }

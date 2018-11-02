@@ -112,14 +112,14 @@ public class IntakeWheelControl extends LinearOpMode {
                 rightDrive.setPower(rightPower);
             }
             if(turn > 0.5){
-                rightPower = -turn;
-                leftPower = turn;
+                rightPower = turn;
+                leftPower = -turn;
                 leftDrive.setPower(leftPower);
-                rightDrive.setPower(-rightPower);
+                rightDrive.setPower(rightPower);
             }
             if(turn <= 0.5 && turn >= -0.5){
-                rightPower = drive;
-                leftPower = drive;
+                rightPower = -drive;
+                leftPower = -drive;
                 leftDrive.setPower(leftPower);
                 rightDrive.setPower(rightPower);
             }
