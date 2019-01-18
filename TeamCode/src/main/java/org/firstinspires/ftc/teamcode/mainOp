@@ -1,0 +1,136 @@
+package org.firstinspires.ftc.teamcode.TeleOp;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.firstinspires.ftc.teamcode.vals;
+
+@TeleOp(name = "Epsilon")
+
+public class mainOp extends LinearOpMode implements vals {
+
+    /* Hardware Vars */
+    private DcMotor leftDrive = null;
+    private DcMotor rightDrive = null;
+    private CRServo collector = null;
+    private CRServo spinner = null;
+    private DcMotor extender = null;
+    private DcMotor lifter = null;
+    private DcMotor flipper = null;
+
+    /* Drive Vars */
+    int mode = 1;
+    double drive = 0.0;
+    double drive1 = 0.0;
+
+
+    public void initialize() {
+
+        lifter = hardwareMap.get(DcMotor.class, "pivotMotor");
+        leftDrive = hardwareMap.get(DcMotor.class,"MotorLeft");
+        rightDrive = hardwareMap.get(DcMotor.class,"MotorRight");
+        extender = hardwareMap.get(DcMotor.class,"extender");
+        flipper = hardwareMap.get(DcMotor.class,"flipper");
+        collector = hardwareMap.get(CRServo.class,"collector");
+        spinner = hardwareMap.get(CRServo.class,"spinner");
+
+        lifter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        
+    }
+
+
+    @Override
+    public void runOpMode()
+    {
+
+        initialize();
+        waitForStart();
+
+
+        while (opModeIsActive())
+        {
+
+            /* Uses triggers to move rack/pinion */
+            if(gamepad2.left_trigger > 0 || gamepad2.right_trigger > 0)
+            {
+                if(gamepad2.right_trigger > gamepad2.left_trigger)
+                {
+                    lifter.setPower(gamepad2.right_trigger);
+                } else if(gamepad2.right_trigger < gamepad2.left_trigger)
+                {
+                    lifter.setPower(-gamepad2.left_trigger);
+                }
+            } else
+            {
+                lifter.setPower(0);
+            }
+
+            /* Collecting Mechanism using button */
+            if(gamepad2.dpad_down)
+            {
+                spinner.setPower(SPIN_SPEED);
+
+            } else if(gamepad2.dpad_up)
+            {
+                spinner.setPower(-SPIN_SPEED);
+
+            } else
+            {
+                spinner.setPower(0);
+            }
+
+            /* Deposit Mechanism */
+            if(gamepad2.y)
+            {
+                collector.setPower(SPIN_SPEED);
+
+            } else if(gamepad2.a)
+            {
+                collector.setPower(-SPIN_SPEED);
+
+            } else
+            {
+                collector.setPower(0);
+            }
+
+
+
+            /* Two mechs to deposit */
+            extender.setPower(-gamepad2.left_stick_y * EXTEND_SPEED);
+            flipper.setPower(gamepad2.right_stick_y * SLOW_SPEED);
+
+            /* Toggle code */
+            if(gamepad1.a)
+            {
+                mode++;
+            }
+
+            if(mode % 2 == 0)
+            {
+                drive = gamepad1.left_stick_y * SLOW_SPEED;
+                drive1 = gamepad1.right_stick_y * SLOW_SPEED;
+            } else
+            {
+                drive = gamepad1.left_stick_y * FAST_SPEED;
+                drive1 = gamepad1.right_stick_y* FAST_SPEED;
+            }
+
+            /* Movement */
+            leftDrive.setPower(powerFunc(drive1));
+            rightDrive.setPower(powerFunc(drive));
+        }
+    }
+
+
+    private static double powerFunc(double speed) {
+        double cubic = Math.pow(speed,3);
+        double dividend = Math.abs(speed);
+
+        return(cubic / dividend);
+    }
+}
